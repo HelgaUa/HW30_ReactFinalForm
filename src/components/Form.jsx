@@ -2,12 +2,12 @@ import React from 'react';
 import { Form as FinalForm, Field } from 'react-final-form';
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from './Button.jsx';
+import validateInput from "../helpers/inputValidation.js";
 
 export function Form(props) {
     const { disabled, handleUpdateItem } = props;
 
     const onSubmit = (values, form) => {
-
             const todoItem = {
                 id: uuidv4(),
                 checked: false,
@@ -18,21 +18,10 @@ export function Form(props) {
             localStorage.setItem('todos', JSON.stringify(newItems));
             handleUpdateItem(newItems);
             form.reset();
-
-    };
-
-    const validate = (values) => {
-        const errors = {};
-        if (!values.inputTodo) {
-            errors.inputTodo = '';
-        } else if (values.inputTodo.trim().length < 5) {
-            errors.inputTodo = 'Field must contain at least 5 characters';
-        }
-        return errors;
     };
 
     return (
-        <FinalForm onSubmit={onSubmit} validate={validate}>
+        <FinalForm onSubmit={onSubmit} validate={validateInput}>
             {({ handleSubmit, invalid }) => (
                 <form onSubmit={handleSubmit} >
                     <Field name="inputTodo">
